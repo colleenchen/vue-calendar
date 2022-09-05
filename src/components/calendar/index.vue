@@ -40,9 +40,8 @@
 <script lang="ts" setup>
 import { NIcon } from "naive-ui";
 import { ref, computed } from "vue";
-import { weekMapZh, generateCalendar } from "./calendar";
+import { weekMapZh, generateCalendar, CalendarItem } from "./calendar";
 import { isAllTrue } from "@/utils/common";
-import { CalendarItem } from "./calendar";
 import { Home } from "@vicons/ionicons5";
 
 const date = ref<Date>(new Date());
