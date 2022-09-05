@@ -10,7 +10,11 @@
         </button>
       </div>
       <div class="calendar-operate__title">{{ dateText }}</div>
-      <button class="button" :disabled="isToday" @click="currentDate">今天</button>
+      <button class="button" :disabled="isToday" @click="currentDate">
+        <n-icon size="25">
+          <home />
+        </n-icon>
+      </button>
     </div>
     <div class="calendar-header">
       <span
@@ -34,10 +38,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { weekMapZh, generateCalendar } from './calendar';
-import { isAllTrue } from '@/utils/common';
-import { CalendarItem } from './calendar';
+import { NIcon } from "naive-ui";
+import { ref, computed } from "vue";
+import { weekMapZh, generateCalendar } from "./calendar";
+import { isAllTrue } from "@/utils/common";
+import { CalendarItem } from "./calendar";
+import { Home } from "@vicons/ionicons5";
 
 const date = ref<Date>(new Date());
 const calendarTable = computed(() => generateCalendar(date.value));
@@ -55,9 +61,9 @@ const isToday = computed(() => {
   return isAllTrue(validArr);
 });
 /**
- * 当天日期高亮显示, 兼容切换日期：
- * 年月日都要对上才能高亮
- * ps: 日历可能会显示下月/上月的同样日期， 仅当月日期高亮
+ * 當天日期高亮顯示, 兼容切換日期：
+ * 年月日都要對上才能高亮
+ * ps: 日曆可能會顯示下月/上月的同樣日期， 僅當月日期高亮
  */
 const isActive = (item: CalendarItem) => {
   return isAllTrue([
@@ -67,20 +73,22 @@ const isActive = (item: CalendarItem) => {
     item.year === new Date().getFullYear(),
   ]);
 };
-// 切换到今天
+// 切換到今天
 const currentDate = () => {
   date.value = new Date();
 };
-// 切换月份, 上个月 or 下个月
-const changeMonth = (type: 'prev' | 'next'): void => {
+// 切換月份, 上個月 or 下個月
+const changeMonth = (type: "prev" | "next"): void => {
   let month = 0;
   let year = 1970;
-  if (type === 'prev') {
+  if (type === "prev") {
     month = date.value.getMonth() === 0 ? 11 : date.value.getMonth() - 1;
-    year = month === 11 ? date.value.getFullYear() - 1 : date.value.getFullYear();
+    year =
+      month === 11 ? date.value.getFullYear() - 1 : date.value.getFullYear();
   } else {
     month = date.value.getMonth() === 11 ? 0 : date.value.getMonth() + 1;
-    year = month === 0 ? date.value.getFullYear() + 1 : date.value.getFullYear();
+    year =
+      month === 0 ? date.value.getFullYear() + 1 : date.value.getFullYear();
   }
   // date.value.setDate(1);
   date.value.setMonth(month);
@@ -102,18 +110,19 @@ $red1: #fa6261;
 
 .calendar {
   border: 4px solid $gray2;
-  padding: 3rem 4rem;
+  padding: 2rem 3.5rem;
   border-radius: 50px;
 }
 
 .button {
-  height: 28px;
+  height: 32px;
+  line-height: 48px;
   font-size: 12px;
   background: #fff;
   margin: 0;
-  padding: 0 16px;
-  border: 1px solid rgba($gray, 0.4);
-  border-radius: 14px;
+  padding: 0 18px;
+  border-radius: 20px;
+  border: 1px solid $gray2;
   cursor: pointer;
   &:hover {
     color: $active-color;
@@ -157,10 +166,9 @@ $red1: #fa6261;
   justify-content: space-between;
   padding: 10px 0;
   border-bottom: 1px solid rgba($gray, 0.15);
-  font-size: 18px;
   position: relative;
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.3rem;
   &__title {
     display: flex;
     align-items: center;
@@ -214,7 +222,7 @@ $red1: #fa6261;
   }
   &__item {
     position: relative;
-    height: 3em;
+    height: 2.6em;
     flex: calc(14.2% - $gap);
     box-sizing: border-box;
     transition: all 0.2s ease;
