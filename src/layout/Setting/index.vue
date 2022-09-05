@@ -47,13 +47,14 @@ const showModal = ref(false);
 <style lang="scss" scoped>
 .setting {
   position: fixed;
-  bottom: 10px;
-  right: 10px;
+  bottom: 2rem;
+  right: 2rem;
   z-index: 99;
   > button {
     width: 80px;
     height: 80px;
     border-radius: 50%;
+    background-color: rgba(205, 228, 255, 0.95);
   }
 }
 .n-card {

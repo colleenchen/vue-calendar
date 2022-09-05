@@ -108,6 +108,7 @@ $red: #ffd5d7;
 $red1: #fa6261;
 
 .calendar {
+  min-width: 600px;
   border: 4px solid $gray2;
   padding: 2rem 3.5rem;
   border-radius: 50px;

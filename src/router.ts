@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router';
 export const routes: Array<RouteRecordRaw> = [
   {
-    path: '/components',
-    name: 'components',
+    path: '/calendar',
+    name: 'calendar',
     component: () => import('@/components/calendar/index.vue')
   },{
     path: '/',

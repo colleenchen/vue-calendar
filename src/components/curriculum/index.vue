@@ -1,15 +1,16 @@
 <template>
-  <div>課表</div>
-  <span
+  <div class="title">課表</div>
+    <div class="curriculum-header">
+      <span  class="curriculum-header__item">時間</span>
+      <span
     v-for="(item, index) in weekMapZh"
     :key="index"
-    class="calendar-header__item"
-    :class="{ gray: index === 0 || index === 6 }"
-    >{{ item }}</span
-  >
-  <div>
-    <div id="coursesTable"></div>
+    class="curriculum-header__item"
+    >{{ item }}
+  </span>
   </div>
+
+
 </template>
 
 <script setup lang="ts">
@@ -120,5 +121,20 @@ const curriculum = [
 ];
 </script>
 
-<style>
+<style lang="scss" scoped>
+.title{
+  font-size:2rem ;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.curriculum-header{
+    display: flex;
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    font-size:1.5rem ;
+    .curriculum-header__item{
+      flex: 1;
+    }
+  }
 </style>
