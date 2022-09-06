@@ -1,20 +1,30 @@
 <template>
-  <div class="title">課表</div>
-    <div class="curriculum-header">
-      <span  class="curriculum-header__item">時間</span>
-      <span
-    v-for="(item, index) in weekMapZh"
-    :key="index"
-    class="curriculum-header__item"
-    >{{ item }}
-  </span>
+  <div class="curriculum-header">
+    <span class="curriculum-header__item">時間</span>
   </div>
-
-
+  <div class="curriculum-box">
+    <div class="curriculum-time">
+      <span v-for="(item, index) in classTime" :key="index">{{ item }} </span>
+    </div>
+    <div class="curriculum-con">
+      <div>
+        <span v-for="(item, index) in lessonsName" :key="index"
+          >{{ item }}
+        </span>
+      </div>
+      <div>
+        <span v-for="(item, index) in lessonsAddress" :key="index"
+          >{{ item }}
+        </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { weekMapZh } from "../calendar/calendar";
+import { ref } from "vue";
+import moment from "moment";
 const classTime = [
   "09:00-10:00",
   "10:00-11:00",
@@ -119,22 +129,79 @@ const curriculum = [
     ],
   },
 ];
+
+const lessonsName = ref([""]);
+const lessonsAddress = ref([""]);
+//當日課程
+const filterDateItems = (date: any) => {
+  const dateA = date || "2022-09-20";
+  curriculum.filter(function (item, index) {
+    if (item.date === dateA) {
+      const name = item.info.map((x) => x.lessonsName);
+      const address = item.info.map((x) => x.lessonsAddress);
+      lessonsName.value = name;
+      lessonsAddress.value = address;
+    }
+  });
+};
+
+filterDateItems("2022-09-20");
+//當天
+const getCurrentDay = () => {
+  let date = [];
+  let start = moment().format("YYYY-MM-DD 00:00:00");
+  let end = moment().format("YYYY-MM-DD HH:mm:ss");
+  date.push(start);
+  date.push(end);
+  console.log("今日", date);
+  return date;
+};
+
+//取得周日期
+const getCurrWeekDays = (dateCurr?: any) => {
+  let currDate = dateCurr || "";
+  let date = [];
+  let weekOfday = parseInt(moment(currDate).format("d")); // 计算今天是这周第几天 周日为一周中的第一天
+  let start = moment(currDate)
+    .subtract(weekOfday, "days")
+    .format("YYYY-MM-DD 00:00:00"); // 周一日期
+  let end = moment(currDate)
+    .add(7 - weekOfday - 1, "days")
+    .format("YYYY-MM-DD 23:59:59"); // 周日日期
+  date.push(start);
+  date.push(end);
+  console.log("本周", date);
+  return date;
+};
+getCurrentDay();
+getCurrWeekDays("2022-09-13");
 </script>
 
 <style lang="scss" scoped>
-.title{
-  font-size:2rem ;
+.curriculum-header {
+  display: flex;
+  width: 100%;
   text-align: center;
-  margin-bottom: 2rem;
-}
-.curriculum-header{
-    display: flex;
-    width: 100%;
-    text-align: center;
-    padding: 15px 0;
-    font-size:1.5rem ;
-    .curriculum-header__item{
-      flex: 1;
-    }
+  padding: 15px 0;
+  font-size: 1rem;
+  .curriculum-header__item {
+    flex: 1;
   }
+}
+.curriculum-box {
+  display: flex;
+  font-size: 1rem;
+  .curriculum-time {
+    text-align: center;
+    span {
+      display: block;
+    }
+    flex: 2;
+  }
+  .curriculum-con {
+    display: flex;
+    flex: 2;
+    flex-direction: column;
+  }
+}
 </style>

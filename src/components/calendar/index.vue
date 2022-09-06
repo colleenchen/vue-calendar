@@ -28,6 +28,10 @@
     <div class="calendar-content" :data-month="date.getMonth() + 1">
       <div
         v-for="(item, index) in calendarTable"
+        @click="
+          getCurrDate(item.year, item.month, item.day);
+          show = !show;
+        "
         :key="index"
         class="calendar-content__item"
         :class="[{ light: !item.isCurrentMonth }, { active: isActive(item) }]"
@@ -36,19 +40,33 @@
       </div>
     </div>
   </div>
+
+  <n-drawer v-model:show="show" :default-width="500" resizable>
+    <n-drawer-content title="課表" :native-scrollbar="false">
+      <Curriculum />
+    </n-drawer-content>
+  </n-drawer>
 </template>
 <script lang="ts" setup>
-import { NIcon } from "naive-ui";
+import { NIcon, NDrawer, NDrawerContent } from "naive-ui";
 import { ref, computed } from "vue";
 import { weekMapZh, generateCalendar, CalendarItem } from "./calendar";
 import { isAllTrue } from "@/utils/common";
 import { Home } from "@vicons/ionicons5";
+import Curriculum from "../curriculum/index.vue";
 
+const show = ref(false);
 const date = ref<Date>(new Date());
 const calendarTable = computed(() => generateCalendar(date.value));
 const dateText = computed(() => {
   return `${date.value.getFullYear()} 年 ${date.value.getMonth() + 1} 月`;
 });
+
+const dataCurr = ref("");
+const getCurrDate = (year: number, month: number, day: number) => {
+  dataCurr.value = `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
+};
 
 const isToday = computed(() => {
   const current = new Date();

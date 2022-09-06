@@ -30,6 +30,7 @@
     ]
   },
   "dependencies": {
+    "moment": "^2.29.4",
     "pinia": "^2.0.14",
     "reset-css": "^5.0.1",
     "vue": "^3.2.33",
