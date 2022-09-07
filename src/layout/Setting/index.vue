@@ -1,6 +1,6 @@
 <template>
   <div class="setting">
-    <n-button strong secondary circle type="info" @click="showModal = true">
+    <n-button strong secondary circle type="info" @click="goList()">
       <template #icon>
         <n-icon size="35"><Settings /></n-icon>
       </template>
@@ -23,9 +23,7 @@
             </n-button>
           </div>
         </template>
-        <div class="modCon">123
-            
-        </div>
+        <div class="modCon">123</div>
         <template #footer>
           <div class="modFoot">
             <n-button type="tertiary" @click="showModal = false">取消</n-button>
@@ -41,7 +39,12 @@
 import { ref } from "vue";
 import { NCard, NModal, NButton, NIcon } from "naive-ui";
 import { Settings, CloseOutline } from "@vicons/ionicons5";
+import router from "@/router";
 const showModal = ref(false);
+
+const goList = () => {
+  router.push("/list");
+};
 </script>
 
 <style lang="scss" scoped>

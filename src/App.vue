@@ -1,8 +1,11 @@
 <template>
   <!-- <router-view /> -->
-  <Layout />
+  <n-message-provider>
+    <Layout />
+  </n-message-provider>
 </template>
 <script lang="ts" setup>
+import { NMessageProvider } from "naive-ui";
 import Layout from "./layout/index.vue";
 </script>
 <style lang="scss">

@@ -9,6 +9,7 @@
 <script lang="ts" setup>
 import { routes } from "@/router";
 import Setting from "./Setting/index.vue";
+
 </script>
 <style lang="scss">
 .layout {
