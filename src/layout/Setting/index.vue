@@ -1,8 +1,11 @@
 <template>
-  <div class="setting">
+  <div class="taskList">
+    <n-button @click="goList" size="large" strong type="primary">代辦事項</n-button>
+  </div>
+  <div class="addList">
     <n-button strong secondary circle type="info" @click="showModal = true">
       <template #icon>
-        <n-icon size="35"><Add /></n-icon>
+        <n-icon size="45"><Add /></n-icon>
       </template>
     </n-button>
     <n-modal v-model:show="showModal">
@@ -45,14 +48,26 @@ const goList = () => {
 </script>
 
 <style lang="scss" scoped>
-.setting {
+.taskList{
+  position: fixed;
+  right:10.5rem;
+  bottom:3.2rem;
+  z-index: 99;
+  >button{
+    width: 10rem;
+    height: 3.3rem;
+    border-radius: .5rem;
+    font-size: 1.3rem;
+  }
+}
+.addList {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
   z-index: 99;
   > button {
-    width: 80px;
-    height: 80px;
+    width: 6.5rem;
+    height: 6.5rem;
     border-radius: 50%;
     background-color: rgba(205, 228, 255, 0.95);
   }

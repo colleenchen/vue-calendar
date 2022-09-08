@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 export const routes: Array<RouteRecordRaw> = [
   {
-    path: "/calendar",
+    path: "/",
     name: "calendar",
     component: () => import("@/components/calendar/index.vue"),
   },
@@ -16,7 +16,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("@/layout/TodoList/List.vue"),
   },
   {
-    path: "/",
+    path: "/form",
     name: "form",
     component: () => import("@/layout/TodoList/form.vue"),
   },

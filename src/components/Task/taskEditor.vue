@@ -7,8 +7,18 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
-const todoList = ref([{}]);
+import { defineComponent,  ref, onMounted } from "vue";
+
+const initialTodo = {
+  subject: "",
+  datetimerange: null,
+  description: "",
+  done:false,
+};
+
+const todoList = ref([initialTodo]);
+
+
 onMounted(() => {
   initTodos();
 });
@@ -18,6 +28,8 @@ const initTodos = () => {
   todoList.value = initTodos ? JSON.parse(initTodos) : [];
   console.log(todoList);
 };
+
+
 </script>
 
 <style>

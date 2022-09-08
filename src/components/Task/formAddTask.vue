@@ -130,6 +130,7 @@ const addTodo = () => {
   localStorage.todoList = JSON.stringify(todoList.value);
   console.log("todoList.value", todoList.value);
 };
+
 </script>
 
 <style lang="scss" scoped>
