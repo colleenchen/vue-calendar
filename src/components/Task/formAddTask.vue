@@ -7,11 +7,11 @@
     label-placement="top"
   >
     <n-grid :cols="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="時間" path="datetimeValue">
+      <n-form-item-gi :span="12" label="時間" path="datetimerange">
         <n-space vertical>
           <n-date-picker
             type="datetimerange"
-            v-model:value="todo.datetimeRange"
+            v-model:value="todo.datetimerange"
           >
           </n-date-picker>
         </n-space>
@@ -36,13 +36,15 @@
       </n-form-item-gi>
     </n-grid>
 
-    <div><n-button @click="addTodo">儲存任務</n-button></div>
+    <div>
+      <n-button @click="resetForm">清除表單</n-button>
+      <n-button @click="handleValidateClick">儲存任務</n-button>
+    </div>
   </n-form>
-  <pre>{{ JSON.stringify(todo, null, 2) }}</pre>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed, ref } from "vue";
+import { defineComponent, computed, ref, onMounted } from "vue";
 import {
   NSpace,
   NDatePicker,
@@ -51,50 +53,86 @@ import {
   NFormItemGi,
   NInput,
   FormInst,
+  FormItemRule,
   useMessage,
   NButton,
 } from "naive-ui";
+import { cloneDeep } from "lodash-es";
 
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
 const todoList = ref([{}]);
-const todo = ref({
+
+const initialTodo = {
   subject: "",
-  datetimeRange: 0,
+  datetimerange: null,
   description: "",
-});
+};
+
+const todo = ref(cloneDeep(initialTodo));
 const rules = {
   subject: {
     required: true,
     trigger: ["blur", "input"],
     message: "请输入標題",
   },
-  datetimeRange: {
+  datetimerange: {
     required: true,
     trigger: ["blur", "change"],
-    message: "请输入時間",
+    validator: (rule: FormItemRule, value: string) => {
+      return new Promise<void>((resolve, reject) => {
+        if (value === null) {
+          reject(Error("尚未輸入日期時間")); // reject with error message
+        } else {
+          resolve();
+        }
+      });
+    },
   },
   description: {
-    required: true,
+    required: false,
     trigger: ["blur", "input"],
     message: "请输入摘要",
   },
 };
 
+const resetForm = () => {
+  todo.value = cloneDeep(initialTodo);
+};
+
+const handleValidateClick = () => {
+  formRef.value?.validate((errors) => {
+    if (!errors) {
+      console.log("新增成功");
+      addTodo();
+    } else {
+      console.log(errors);
+    }
+  });
+};
+
 const methodSave = ref("new");
+
+onMounted(() => {
+  initTodos();
+});
+
+const initTodos = () => {
+  localStorage.todoList = localStorage.todoList || "[]";
+  todoList.value = JSON.parse(localStorage.todoList);
+  console.log("initTodos", todoList.value);
+};
 
 const addTodo = () => {
   const todos = {
     subject: todo.value.subject,
-    datetimeRange: todo.value.datetimeRange,
-    description: todo.value.datetimeRange,
+    datetimerange: todo.value.datetimerange,
+    description: todo.value.description,
     done: false,
   };
-
   todoList.value.push(todos);
-
+  localStorage.todoList = JSON.stringify(todoList.value);
   console.log("todoList.value", todoList.value);
-  localStorage.todos = JSON.stringify(todoList.value);
 };
 </script>
 

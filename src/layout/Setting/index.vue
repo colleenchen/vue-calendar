@@ -2,7 +2,7 @@
   <div class="setting">
     <n-button strong secondary circle type="info" @click="goList()">
       <template #icon>
-        <n-icon size="35"><Settings /></n-icon>
+        <n-icon size="35"><Add /></n-icon>
       </template>
     </n-button>
     <n-modal v-model:show="showModal">
@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { NCard, NModal, NButton, NIcon } from "naive-ui";
-import { Settings, CloseOutline } from "@vicons/ionicons5";
+import { Add, CloseOutline } from "@vicons/ionicons5";
 import router from "@/router";
 const showModal = ref(false);
 

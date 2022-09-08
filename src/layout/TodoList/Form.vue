@@ -1,5 +1,4 @@
 <template>
-  formAddTask
   <formAddTask />
 </template>
 
