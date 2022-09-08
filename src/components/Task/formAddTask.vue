@@ -6,24 +6,17 @@
     size="large"
     label-placement="top"
   >
-    <n-grid :cols="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="時間" path="datetimerange">
-        <n-space vertical>
-          <n-date-picker
-            type="datetimerange"
-            v-model:value="todo.datetimerange"
-          >
-          </n-date-picker>
-        </n-space>
-      </n-form-item-gi>
-    </n-grid>
-    <n-grid :cols="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="標題" path="subject">
+    <n-space vertical class="date">
+      <n-date-picker type="datetimerange" v-model:value="todo.datetimerange">
+      </n-date-picker>
+    </n-space>
+    <n-grid :gutter="[0, 24]">
+      <n-form-item-gi :span="24" label="標題" path="subject">
         <n-input v-model:value="todo.subject" placeholder="subject" />
       </n-form-item-gi>
     </n-grid>
-    <n-grid :cols="24" :x-gap="24">
-      <n-form-item-gi :span="12" label="摘要" path="description">
+    <n-grid :gutter="[0, 24]">
+      <n-form-item-gi :span="24" label="摘要" path="description">
         <n-input
           v-model:value="todo.description"
           placeholder="description"
@@ -35,11 +28,16 @@
         />
       </n-form-item-gi>
     </n-grid>
-
-    <div>
-      <n-button @click="resetForm">清除表單</n-button>
-      <n-button @click="handleValidateClick">儲存任務</n-button>
-    </div>
+    <n-grid :gutter="[0, 24]">
+      <n-form-item-gi :span="24">
+        <div class="btn-box">
+          <n-button @click="resetForm">清除表單</n-button>
+          <n-button type="error" @click="handleValidateClick"
+            >確定新增</n-button
+          >
+        </div>
+      </n-form-item-gi>
+    </n-grid>
   </n-form>
 </template>
 
@@ -69,7 +67,7 @@ const initialTodo = {
   description: "",
 };
 
-const todo = ref(cloneDeep(initialTodo));
+const todo = ref({ ...initialTodo });
 const rules = {
   subject: {
     required: true,
@@ -103,15 +101,13 @@ const resetForm = () => {
 const handleValidateClick = () => {
   formRef.value?.validate((errors) => {
     if (!errors) {
-      console.log("新增成功");
+      message.info("新增成功");
       addTodo();
     } else {
       console.log(errors);
     }
   });
 };
-
-const methodSave = ref("new");
 
 onMounted(() => {
   initTodos();
@@ -137,7 +133,14 @@ const addTodo = () => {
 </script>
 
 <style lang="scss" scoped>
-pre {
-  margin-top: 20px;
+.date {
+  margin-bottom: 20px;
+}
+.btn-box {
+  width: 100%;
+  text-align: right;
+  button {
+    margin-left: 15px;
+  }
 }
 </style>

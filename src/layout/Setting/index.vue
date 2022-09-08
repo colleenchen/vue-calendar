@@ -1,13 +1,13 @@
 <template>
   <div class="setting">
-    <n-button strong secondary circle type="info" @click="goList()">
+    <n-button strong secondary circle type="info" @click="showModal = true">
       <template #icon>
         <n-icon size="35"><Add /></n-icon>
       </template>
     </n-button>
     <n-modal v-model:show="showModal">
       <n-card
-        style="width: 600px"
+        style="width: 550px"
         :bordered="false"
         size="huge"
         role="dialog"
@@ -15,7 +15,7 @@
       >
         <template #header>
           <div class="modHead">
-            <span>設定課表</span>
+            <span>新增代辦事項</span>
             <n-button text @click="showModal = false">
               <template #icon>
                 <n-icon size="30" color="#414141"><CloseOutline /></n-icon>
@@ -23,13 +23,9 @@
             </n-button>
           </div>
         </template>
-        <div class="modCon">123</div>
-        <template #footer>
-          <div class="modFoot">
-            <n-button type="tertiary" @click="showModal = false">取消</n-button>
-            <n-button type="primary">確認</n-button>
-          </div>
-        </template>
+        <div class="modCon">
+          <formAddTask />
+        </div>
       </n-card>
     </n-modal>
   </div>
@@ -39,6 +35,7 @@
 import { ref } from "vue";
 import { NCard, NModal, NButton, NIcon } from "naive-ui";
 import { Add, CloseOutline } from "@vicons/ionicons5";
+import formAddTask from "../../components/Task/formAddTask.vue";
 import router from "@/router";
 const showModal = ref(false);
 
