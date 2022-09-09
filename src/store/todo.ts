@@ -1,28 +1,34 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const counterStore = defineStore("todo", {
-  state: () => {
-    return {
-      todos: [],
+export const useTodoStore = defineStore("todo",()=>{
+  const todoList = ref([{}]);
+
+  const initialTodo = {
+    subject: "",
+    datetimerange: null,
+    description: "",
+  };
+  
+  const todo = ref({ ...initialTodo });
+
+  const initTodos = () => {
+    localStorage.todoList = localStorage.todoList || "[]";
+    todoList.value = JSON.parse(localStorage.todoList);
+    console.log("initTodos", todoList.value);
+  };
+  
+  const addTodo = () => {
+    const todos = {
+      subject: todo.value.subject,
+      datetimerange: todo.value.datetimerange,
+      description: todo.value.description,
+      done: false,
     };
-  },
-  actions: {
-    initTodos() {
-      localStorage.todos = localStorage.todos || "[]";
-      this.todos = JSON.parse(localStorage.todos);
-    },
-
-    addTodo(todoInfo: any) {
-      const todo = {
-        datetimeRange: todoInfo.datetimeRange,
-        subject: todoInfo.subject,
-        description: todoInfo.description,
-        done: false,
-      };
-
-      // this.todos.push(todo);
-      localStorage.todos = JSON.stringify(this.todos);
-    },
-  },
+    todoList.value.push(todos);
+    localStorage.todoList = JSON.stringify(todoList.value);
+    console.log("todoList.value", todoList.value);
+  };
+  
+  return {todoList,initialTodo,todo,initTodos,addTodo};
 });

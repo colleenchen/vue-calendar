@@ -1,24 +1,24 @@
 <template>
   <n-form
     ref="formRef"
-    :model="todo"
+    :model="todoStore.todo"
     :rules="rules"
     size="large"
     label-placement="top"
   >
     <n-space vertical class="date">
-      <n-date-picker type="datetimerange" v-model:value="todo.datetimerange">
+      <n-date-picker type="datetimerange" v-model:value="todoStore.todo.datetimerange">
       </n-date-picker>
     </n-space>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="標題" path="subject">
-        <n-input v-model:value="todo.subject" placeholder="subject" />
+        <n-input v-model:value="todoStore.todo.subject" placeholder="subject" />
       </n-form-item-gi>
     </n-grid>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="摘要" path="description">
         <n-input
-          v-model:value="todo.description"
+          v-model:value="todoStore.todo.description"
           placeholder="description"
           type="textarea"
           :autosize="{
@@ -56,18 +56,12 @@ import {
   NButton,
 } from "naive-ui";
 import { cloneDeep } from "lodash-es";
+import { useTodoStore } from "../../store/todo";
 
+const todoStore = useTodoStore();
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
-const todoList = ref([{}]);
 
-const initialTodo = {
-  subject: "",
-  datetimerange: null,
-  description: "",
-};
-
-const todo = ref({ ...initialTodo });
 const rules = {
   subject: {
     required: true,
@@ -95,14 +89,14 @@ const rules = {
 };
 
 const resetForm = () => {
-  todo.value = cloneDeep(initialTodo);
+  todoStore.todo = cloneDeep(todoStore.initialTodo);
 };
 
 const handleValidateClick = () => {
   formRef.value?.validate((errors) => {
     if (!errors) {
       message.info("新增成功");
-      addTodo();
+      todoStore.addTodo();
     } else {
       console.log(errors);
     }
@@ -110,26 +104,8 @@ const handleValidateClick = () => {
 };
 
 onMounted(() => {
-  initTodos();
+  todoStore.initTodos();
 });
-
-const initTodos = () => {
-  localStorage.todoList = localStorage.todoList || "[]";
-  todoList.value = JSON.parse(localStorage.todoList);
-  console.log("initTodos", todoList.value);
-};
-
-const addTodo = () => {
-  const todos = {
-    subject: todo.value.subject,
-    datetimerange: todo.value.datetimerange,
-    description: todo.value.description,
-    done: false,
-  };
-  todoList.value.push(todos);
-  localStorage.todoList = JSON.stringify(todoList.value);
-  console.log("todoList.value", todoList.value);
-};
 
 </script>
 
