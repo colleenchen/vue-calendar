@@ -1,15 +1,15 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-export const useTodoStore = defineStore("todo",()=>{
-  const todoList = ref([{}]);
 
+export const useTodoStore = defineStore("todo",()=>{
   const initialTodo = {
     subject: "",
     datetimerange: null,
     description: "",
+    done:false,
   };
-  
+  const todoList = ref([initialTodo]);
   const todo = ref({ ...initialTodo });
 
   const initTodos = () => {
