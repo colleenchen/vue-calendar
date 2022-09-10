@@ -1,11 +1,11 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 
-
-export const useTodoStore = defineStore("todo",()=>{
+export const useTodoStore = defineStore("todo", () => {
+  const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
   const initialTodo = {
     subject: "",
-    datetimerange: null,
+    datetimerange:[todayStart.valueOf(), Date.now()],
     description: "",
     done:false,
   };

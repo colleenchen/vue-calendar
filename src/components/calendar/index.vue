@@ -41,9 +41,9 @@
     </div>
   </div>
 
-  <n-drawer v-model:show="show" :default-width="500" resizable>
-    <n-drawer-content title="課表" :native-scrollbar="false">
-      <Curriculum />
+  <n-drawer v-model:show="show" :default-width="600" resizable>
+    <n-drawer-content title="代辦事項" :native-scrollbar="false">
+     <TaskEditor />
     </n-drawer-content>
   </n-drawer>
 </template>
@@ -53,7 +53,7 @@ import { ref, computed } from "vue";
 import { weekMapZh, generateCalendar, CalendarItem } from "./calendar";
 import { isAllTrue } from "@/utils/common";
 import { Home } from "@vicons/ionicons5";
-import Curriculum from "../curriculum/index.vue";
+import TaskEditor from "../Task/taskEditor.vue";
 
 const show = ref(false);
 const date = ref<Date>(new Date());
@@ -130,6 +130,8 @@ $red1: #fa6261;
   border: 4px solid $gray2;
   padding: 2rem 3.5rem;
   border-radius: 50px;
+  background-color: #fafafa;
+
 }
 
 .button {
@@ -278,5 +280,6 @@ $red1: #fa6261;
       cursor: not-allowed;
     }
   }
+
 }
 </style>

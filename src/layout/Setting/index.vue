@@ -75,10 +75,11 @@ const goList = () => {
 .n-card {
   min-height: 50vh;
   border-radius: 20px;
+  font-family: Noto Sans SC;
 }
 .modHead {
   display: flex;
-  > span {
+ > span {
     flex: 1;
   }
   > button {
@@ -87,6 +88,7 @@ const goList = () => {
 }
 .modCon {
   padding: 10px 0;
+
 }
 .modFoot {
   text-align: right;

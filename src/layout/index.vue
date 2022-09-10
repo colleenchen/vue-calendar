@@ -19,6 +19,7 @@ import Setting from "./Setting/index.vue";
 .layout-content {
   flex: 1;
   padding: 1.5rem;
-  background: #fafafa;
+  max-width: 1200px;
+  margin: auto;
 }
 </style>

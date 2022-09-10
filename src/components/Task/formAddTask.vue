@@ -6,8 +6,11 @@
     size="large"
     label-placement="top"
   >
+  <n-grid :gutter="[0, 24]" class="lab">
+      <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
+    </n-grid>
     <n-space vertical class="date">
-      <n-date-picker type="datetimerange" v-model:value="todoStore.todo.datetimerange">
+      <n-date-picker size="large" type="datetimerange" v-model:value="todoStore.todo.datetimerange">
       </n-date-picker>
     </n-space>
     <n-grid :gutter="[0, 24]">
@@ -42,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, computed, ref, onMounted } from "vue";
+import {  ref } from "vue";
 import {
   NSpace,
   NDatePicker,
@@ -58,9 +61,11 @@ import {
 import { cloneDeep } from "lodash-es";
 import { useTodoStore } from "../../store/todo";
 
+
 const todoStore = useTodoStore();
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
+
 
 const rules = {
   subject: {
@@ -103,13 +108,15 @@ const handleValidateClick = () => {
   });
 };
 
-onMounted(() => {
-  todoStore.initTodos();
-});
+
 
 </script>
 
 <style lang="scss" scoped>
+
+.lab{
+  margin-bottom: -65px;
+}
 .date {
   margin-bottom: 20px;
 }
