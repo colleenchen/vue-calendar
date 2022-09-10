@@ -17,33 +17,23 @@
       </button>
     </div>
     <div class="calendar-header">
-      <span
-        v-for="(item, index) in weekMapZh"
-        :key="index"
-        class="calendar-header__item"
-        :class="{ gray: index === 0 || index === 6 }"
-        >{{ item }}</span
-      >
+      <span v-for="(item, index) in weekMapZh" :key="index" class="calendar-header__item"
+        :class="{ gray: index === 0 || index === 6 }">{{ item }}</span>
     </div>
     <div class="calendar-content" :data-month="date.getMonth() + 1">
-      <div
-        v-for="(item, index) in calendarTable"
-        @click="
-          getCurrDate(item.year, item.month, item.day);
-          show = !show;
-        "
-        :key="index"
-        class="calendar-content__item"
-        :class="[{ light: !item.isCurrentMonth }, { active: isActive(item) }]"
-      >
+      <div v-for="(item, index) in calendarTable" @click="
+        getCurrDate(item.year, item.month, item.day);
+        show = !show;
+      " :key="index" class="calendar-content__item"
+        :class="[{ light: !item.isCurrentMonth }, { active: isActive(item) }]">
         {{ item.day }}
       </div>
     </div>
   </div>
 
-  <n-drawer v-model:show="show" :default-width="600" resizable>
+  <n-drawer v-model:show="show" :default-width="450" resizable>
     <n-drawer-content title="代辦事項" :native-scrollbar="false">
-     <TaskEditor />
+      <TaskEditor />
     </n-drawer-content>
   </n-drawer>
 </template>
@@ -144,12 +134,15 @@ $red1: #fa6261;
   border-radius: 20px;
   border: 1px solid $gray2;
   cursor: pointer;
+
   &:hover {
     color: $active-color;
   }
+
   &:active {
     background-color: rgba(0, 0, 0, 6%);
   }
+
   &:disabled {
     color: $gray;
     background-color: rgba(0, 0, 0, 6.5%);
@@ -162,11 +155,13 @@ $red1: #fa6261;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
+
   .button:last-child {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     border-left: 0;
   }
+
   .button:not(:first-child):not(:last-child) {
     border-radius: 0;
     border-left: 0;
@@ -189,6 +184,7 @@ $red1: #fa6261;
   position: relative;
   font-weight: 700;
   font-size: 2.3rem;
+
   &__title {
     display: flex;
     align-items: center;
@@ -206,6 +202,7 @@ $red1: #fa6261;
   display: flex;
   font-weight: 700;
   font-size: 1.5rem;
+
   &__item {
     flex: 1;
     text-align: center;
@@ -214,6 +211,7 @@ $red1: #fa6261;
     border-radius: 40px;
     padding: 5px;
     margin: 5px;
+
     &.gray {
       color: $font;
       background-color: $red;
@@ -229,6 +227,7 @@ $red1: #fa6261;
   color: $font;
   font-weight: 700;
   font-size: 2rem;
+
   &::after {
     content: attr(data-month);
     position: absolute;
@@ -240,6 +239,7 @@ $red1: #fa6261;
     color: rgba($gray, 0.1);
     z-index: 1;
   }
+
   &__item {
     position: relative;
     height: 2.6em;
@@ -254,27 +254,33 @@ $red1: #fa6261;
     border-bottom: 4px solid $gray1;
     border-left: 4px solid $gray1;
     z-index: 10;
+
     &:nth-child(7n),
     &:nth-child(7n-6) {
       color: $red1;
     }
+
     &:nth-child(7n) {
       margin-right: 0;
     }
+
     &.active {
       color: $active-color;
       font-weight: bold;
       border-bottom: 4px solid $active-color;
       border-left: 4px solid $active-color;
+
       &:nth-child(7n),
       &:nth-child(7n-6) {
         color: $active-color;
       }
     }
+
     &:hover {
       background-color: rgba($red, 0.3);
       cursor: pointer;
     }
+
     &.light {
       color: rgba($gray, 0.4);
       cursor: not-allowed;
