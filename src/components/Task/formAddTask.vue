@@ -1,12 +1,6 @@
 <template>
-  <n-form
-    ref="formRef"
-    :model="todoStore.todo"
-    :rules="rules"
-    size="large"
-    label-placement="top"
-  >
-  <n-grid :gutter="[0, 24]" class="lab">
+  <n-form ref="formRef" :model="todoStore.todo" :rules="rules" size="large" label-placement="top">
+    <n-grid :gutter="[0, 24]" class="lab">
       <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
     </n-grid>
     <n-space vertical class="date">
@@ -15,29 +9,23 @@
     </n-space>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="標題" path="subject">
-        <n-input v-model:value="todoStore.todo.subject" placeholder="subject" />
+        <n-input v-model:value="todoStore.todo.subject" placeholder="subject" clearable />
       </n-form-item-gi>
     </n-grid>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="摘要" path="description">
-        <n-input
-          v-model:value="todoStore.todo.description"
-          placeholder="description"
-          type="textarea"
+        <n-input v-model:value="todoStore.todo.description" placeholder="description" type="textarea" clearable
           :autosize="{
             minRows: 3,
             maxRows: 5,
-          }"
-        />
+          }" />
       </n-form-item-gi>
     </n-grid>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24">
         <div class="btn-box">
           <n-button @click="resetForm">清除表單</n-button>
-          <n-button type="error" @click="handleValidateClick"
-            >確定新增</n-button
-          >
+          <n-button type="error" @click="handleValidateClick">確定新增</n-button>
         </div>
       </n-form-item-gi>
     </n-grid>
@@ -45,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import {  ref } from "vue";
+import { ref } from "vue";
 import {
   NSpace,
   NDatePicker,
@@ -113,16 +101,18 @@ const handleValidateClick = () => {
 </script>
 
 <style lang="scss" scoped>
-
-.lab{
+.lab {
   margin-bottom: -65px;
 }
+
 .date {
   margin-bottom: 20px;
 }
+
 .btn-box {
   width: 100%;
   text-align: right;
+
   button {
     margin-left: 15px;
   }
