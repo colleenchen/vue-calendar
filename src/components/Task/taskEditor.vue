@@ -92,7 +92,7 @@ import {
   NInputGroup
 } from "naive-ui";
 import { CloseOutline } from "@vicons/ionicons5";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
 
 const message = useMessage();
@@ -195,6 +195,16 @@ const handleValidateClick = () => {
     }
   });
 };
+
+
+onMounted(() => {
+  let b = searchList.value.map((e: any, index: never) => {
+    return e.index = index;
+  });
+  console.log(b);
+  console.log('searchList.value', searchList.value)
+});
+
 </script>
 
 <style lang="scss" scoped>
