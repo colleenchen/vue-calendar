@@ -133,6 +133,8 @@ const remove = (task: any, index: number) => {
 const confirmRemoveTask = () => {
   todoStore.todoList.splice(taskSelected.value.index, 1);
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
+  searchList.value = todoStore.todoList;
+  searchInput.value = '';
   message.success("Submit");
   showModal.value = false;
 };
@@ -143,12 +145,13 @@ const cancelCallback = () => {
 };
 
 const saveTask = () => {
-  localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
   // todoStore.todoList[editIndex.value].datetimerange =
   //   taskSelected.value.datetimerange;
   // todoStore.todoList[editIndex.value].subject = taskSelected.value.subject;
   // todoStore.todoList[editIndex.value].description =
   //   taskSelected.value.description;
+  searchList.value = todoStore.todoList;
+  localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
 };
 
 const clearEdit = () => {
@@ -232,11 +235,11 @@ $gray2: #ebebeb;
   .description {
     margin-top: 5px;
     border-top: 2px dashed $gray2;
-
     padding-top: 5px;
   }
 
   .btn-box {
+    margin-top: 10px;
     justify-content: flex-end !important;
   }
 }
