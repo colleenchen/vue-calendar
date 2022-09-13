@@ -1,31 +1,56 @@
 <template>
-  <n-form ref="formRef" :model="todoStore.todo" :rules="rules" size="large" label-placement="top">
+  <n-form
+    ref="formRef"
+    :model="todoStore.todo"
+    :rules="rules"
+    size="large"
+    label-placement="top"
+  >
     <n-grid :gutter="[0, 24]" class="lab">
-      <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
+      <n-form-item-gi
+        :span="24"
+        label="時間"
+        path="datetimerange"
+      ></n-form-item-gi>
     </n-grid>
     <n-space vertical class="date">
-      <n-date-picker size="large" type="datetimerange" v-model:value="todoStore.todo.datetimerange">
+      <n-date-picker
+        size="large"
+        type="datetimerange"
+        v-model:value="todoStore.todo.datetimerange"
+      >
       </n-date-picker>
     </n-space>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="標題" path="subject">
-        <n-input v-model:value="todoStore.todo.subject" placeholder="subject" clearable />
+        <n-input
+          v-model:value="todoStore.todo.subject"
+          placeholder="subject"
+          clearable
+        />
       </n-form-item-gi>
     </n-grid>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24" label="摘要" path="description">
-        <n-input v-model:value="todoStore.todo.description" placeholder="description" type="textarea" clearable
+        <n-input
+          v-model:value="todoStore.todo.description"
+          placeholder="description"
+          type="textarea"
+          clearable
           :autosize="{
             minRows: 3,
             maxRows: 5,
-          }" />
+          }"
+        />
       </n-form-item-gi>
     </n-grid>
     <n-grid :gutter="[0, 24]">
       <n-form-item-gi :span="24">
         <div class="btn-box">
           <n-button @click="resetForm">清除表單</n-button>
-          <n-button type="error" @click="handleValidateClick">確定新增</n-button>
+          <n-button type="error" color="#ff575f" @click="handleValidateClick"
+            >確定新增</n-button
+          >
         </div>
       </n-form-item-gi>
     </n-grid>
@@ -49,11 +74,9 @@ import {
 import { cloneDeep } from "lodash-es";
 import { useTodoStore } from "../../store/todo";
 
-
 const todoStore = useTodoStore();
 const message = useMessage();
 const formRef = ref<FormInst | null>(null);
-
 
 const rules = {
   subject: {
@@ -95,9 +118,6 @@ const handleValidateClick = () => {
     }
   });
 };
-
-
-
 </script>
 
 <style lang="scss" scoped>
