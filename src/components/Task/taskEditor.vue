@@ -5,8 +5,8 @@
     :key="index"
   >
     <div class="time">
-      <n-time :time="item.datetimerange[0]" format="yyyy-MM-dd hh:mm" /> ~
-      <n-time :time="item.datetimerange[1]" format="yyyy-MM-dd hh:mm" />
+      <n-time :time="item.datetimerange[0]" /> ~
+      <n-time :time="item.datetimerange[1]" />
     </div>
     <div class="subject">{{ item.subject }}</div>
     <div class="description">{{ item.description }}</div>
