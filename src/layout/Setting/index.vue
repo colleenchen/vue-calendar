@@ -1,7 +1,7 @@
 <template>
-  <!-- <div class="taskList">
-    <n-button @click="goList" size="large" strong type="primary">代辦事項</n-button>
-  </div> -->
+  <div class="taskList">
+    <n-button @click="goList" size="large" strong type="primary">所有代辦事項</n-button>
+  </div>
   <div class="addList">
     <n-button strong secondary circle type="info" @click="dialogStore.showAddTodoModal = true">
       <template #icon>
@@ -38,13 +38,14 @@ import { NCard, NModal, NButton, NIcon } from "naive-ui";
 import { Add, CloseOutline } from "@vicons/ionicons5";
 import formAddTask from "../../components/Task/formAddTask.vue";
 import { useDialogStore } from "../../store/dialog";
-import router from "@/router";
+import { useTodoStore } from "../../store/todo";
 
+const todoStore = useTodoStore();
 const dialogStore = useDialogStore();
 
-
 const goList = () => {
-  router.push("/list");
+  dialogStore.showTodoListDrawer = true;
+  todoStore.currentDate = '';
 };
 
 const fatherFun = (n: number) => {
@@ -60,7 +61,8 @@ const fatherFun = (n: number) => {
   z-index: 99;
 
   >button {
-    width: 10rem;
+    min-width: 10rem;
+    padding: 0 1.6rem;
     height: 3.3rem;
     border-radius: .5rem;
     font-size: 1.3rem;
