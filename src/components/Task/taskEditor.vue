@@ -5,6 +5,12 @@
       <Close class="icon-close" @click="clearSearch" />
     </n-input-group>
   </n-space>
+  <div class="noTodo" v-if="searchList.length === 0 && searchInput===''">
+    <div class="btn" @click="dialogStore.showAddTodoModal=true">
+      <Duplicate class="icon-duplicate" />
+      <div>尚無資料 火速新增</div>
+    </div>
+  </div>
   <div class="todoList" v-for="(item, index) in searchList" :key="index">
     <div class="time">
       <n-time :time="item.datetimerange[0]" type="datetime" /> ~
@@ -16,6 +22,10 @@
       <n-button @click="remove(item,item.index)">刪除</n-button>
       <n-button type="primary" @click="edit(item.index)">編輯</n-button>
     </n-space>
+  </div>
+  <div class="seachNull" v-if="searchList.length === 0 && searchInput!==''">
+    <FileTray class="icon-fileTray" />
+    <div>搜尋無資料</div>
   </div>
   <n-modal v-model:show="showModal" preset="dialog" title="確定刪除?" content="確定刪除嗎?刪除的資料無法回復!!" positive-text="確定"
     negative-text="再考慮一下" @positive-click="confirmRemoveTask" @negative-click="cancelCallback" />
@@ -75,6 +85,7 @@
 
 <script setup lang="ts">
 import { useTodoStore } from "../../store/todo";
+import { useDialogStore } from "../../store/dialog";
 import {
   NTime,
   NSpace,
@@ -92,12 +103,14 @@ import {
   NDatePicker,
   NInputGroup
 } from "naive-ui";
-import { CloseOutline, Close } from "@vicons/ionicons5";
+import { CloseOutline, Close, FileTray, Duplicate } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
 
 const message = useMessage();
 const todoStore = useTodoStore();
+const dialogStore = useDialogStore();
+
 const taskSelected = ref([] as any);
 const formRef = ref<FormInst | null>(null);
 const showModal = ref(false);
@@ -105,7 +118,6 @@ const showEditModal = ref(false);
 const editIndex = ref(0);
 const searchList = ref(cloneDeep(todoStore.todoList) as any);
 let searchInput = ref("");
-
 
 const filteredList = () => {
   if (searchInput.value != '') {
@@ -304,6 +316,7 @@ $gray2: #ebebeb;
 .search {
   position: relative;
   margin-bottom: 20px;
+  margin-top: 10px;
 
   .icon-close {
     position: absolute;
@@ -312,6 +325,38 @@ $gray2: #ebebeb;
     width: 25px;
     color: #ccc;
     cursor: pointer;
+  }
+}
+
+.noTodo {
+  padding: 20px;
+  text-align: center;
+  color: #ccc;
+  cursor: pointer;
+
+  .btn {
+    display: inline-block;
+    padding: 20px;
+    color: #6dc59c;
+    opacity: .6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .icon-duplicate {
+    width: 40px
+  }
+}
+
+.seachNull {
+  padding: 20px;
+  text-align: center;
+  color: #ccc;
+
+  .icon-fileTray {
+    width: 40px;
   }
 }
 </style>
