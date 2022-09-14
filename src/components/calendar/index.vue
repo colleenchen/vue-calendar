@@ -23,7 +23,6 @@
     <div class="calendar-content" :data-month="date.getMonth() + 1">
       <div v-for="(item, index) in calendarTable" @click="
         getCurrDate(item.year, item.month, item.day);
-        show = !show;
       " :key="index" class="calendar-content__item"
         :class="[{ light: !item.isCurrentMonth }, { active: isActive(item) }]">
         {{ item.day }}
@@ -31,7 +30,7 @@
     </div>
   </div>
 
-  <n-drawer v-model:show="show" :default-width="450" resizable>
+  <n-drawer v-model:show=dialogStore.showTodoListDrawer :default-width="450" resizable>
     <n-drawer-content title="代辦事項" :native-scrollbar="false">
       <TaskEditor />
     </n-drawer-content>
@@ -44,8 +43,11 @@ import { weekMapZh, generateCalendar, CalendarItem } from "./calendar";
 import { isAllTrue } from "@/utils/common";
 import { Home } from "@vicons/ionicons5";
 import TaskEditor from "../Task/taskEditor.vue";
+import { useDialogStore } from "../../store/dialog";
+import { useTodoStore } from "../../store/todo";
 
-const show = ref(false);
+const dialogStore = useDialogStore();
+const todoStore = useTodoStore();
 const date = ref<Date>(new Date());
 const calendarTable = computed(() => generateCalendar(date.value));
 const dateText = computed(() => {
@@ -54,8 +56,12 @@ const dateText = computed(() => {
 
 const dataCurr = ref("");
 const getCurrDate = (year: number, month: number, day: number) => {
-  dataCurr.value = `${year}-${month}-${day}`;
-  return `${year}-${month}-${day}`;
+  dataCurr.value = `${year}-${month + 1}-${day}`;
+  dialogStore.showTodoListDrawer = true;
+  const dayCurr = day.toString().padStart(2, '0');
+  const monthCurr = (month + 1).toString().padStart(2, '0');
+  todoStore.currentDate = `${year}-${monthCurr}-${dayCurr}`;
+  return `${year}-${monthCurr}-${day}`;
 };
 
 const isToday = computed(() => {

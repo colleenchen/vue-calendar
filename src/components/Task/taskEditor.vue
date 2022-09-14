@@ -106,24 +106,28 @@ import {
 import { CloseOutline, Close, FileTray, Duplicate } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
+import moment from "moment";
 
 const message = useMessage();
 const todoStore = useTodoStore();
 const dialogStore = useDialogStore();
-
 const taskSelected = ref([] as any);
 const formRef = ref<FormInst | null>(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const editIndex = ref(0);
 const searchList = ref(cloneDeep(todoStore.todoList) as any);
-let searchInput = ref("");
+let searchInput = ref(todoStore.currentDate);
 
 const filteredList = () => {
   if (searchInput.value != '') {
     const results = searchList.value.filter((data: any) => {
+      let start = moment(data.datetimerange[0]).format("YYYY-MM-DD hh:mm:ss");
+      let end = moment(data.datetimerange[1]).format("YYYY-MM-DD hh:mm:ss");
       return data.subject.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || data.description.toLowerCase().startsWith(searchInput.value.toLowerCase())
+        || start.toLowerCase().startsWith(searchInput.value.toLowerCase())
+        || end.toLowerCase().startsWith(searchInput.value.toLowerCase())
     });
     searchList.value = results;
   } else {
@@ -220,6 +224,7 @@ const clearSearch = () => {
 
 onMounted(() => {
   addIndex();
+  filteredList();
 });
 
 

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { cloneDeep } from "lodash-es";
 
 export const useTodoStore = defineStore("todo", () => {
+  const currentDate = ref("");
   const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
   const initialTodo = {
     subject: "",
@@ -36,5 +37,13 @@ export const useTodoStore = defineStore("todo", () => {
     console.log("add-todoList", todoList.value);
   };
 
-  return { todoList, initialTodo, todo, initTodos, resetForm, addTodo };
+  return {
+    todoList,
+    initialTodo,
+    todo,
+    initTodos,
+    resetForm,
+    addTodo,
+    currentDate,
+  };
 });
