@@ -1,23 +1,28 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import { cloneDeep } from "lodash-es";
 
 export const useTodoStore = defineStore("todo", () => {
   const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
   const initialTodo = {
     subject: "",
-    datetimerange:[todayStart.valueOf(), Date.now()],
+    datetimerange: [todayStart.valueOf(), Date.now()],
     description: "",
-    done:false,
+    done: false,
   };
   const todoList = ref([initialTodo]);
   const todo = ref({ ...initialTodo });
+
+  const resetForm = () => {
+    todo.value = cloneDeep(initialTodo);
+  };
 
   const initTodos = () => {
     localStorage.todoList = localStorage.todoList || "[]";
     todoList.value = JSON.parse(localStorage.todoList);
     console.log("initTodos", todoList.value);
   };
-  
+
   const addTodo = () => {
     const todos = {
       subject: todo.value.subject,
@@ -27,8 +32,9 @@ export const useTodoStore = defineStore("todo", () => {
     };
     todoList.value.push(todos);
     localStorage.todoList = JSON.stringify(todoList.value);
-    console.log("todoList.value", todoList.value);
+    resetForm();
+    console.log("add-todoList", todoList.value);
   };
-  
-  return {todoList,initialTodo,todo,initTodos,addTodo};
+
+  return { todoList, initialTodo, todo, initTodos, resetForm, addTodo };
 });

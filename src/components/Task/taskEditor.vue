@@ -2,6 +2,7 @@
   <n-space vertical class="search">
     <n-input-group>
       <n-input type="text" size="large" v-model:value="searchInput" placeholder="Search..." @keyup="filteredList()" />
+      <Close class="icon-close" @click="clearSearch" />
     </n-input-group>
   </n-space>
   <div class="todoList" v-for="(item, index) in searchList" :key="index">
@@ -12,8 +13,8 @@
     <div class="subject">{{ item.subject }}</div>
     <div class="description">{{ item.description }}</div>
     <n-space class="btn-box">
-      <n-button @click="remove(item, index)">刪除</n-button>
-      <n-button type="primary" @click="edit(index)">編輯</n-button>
+      <n-button @click="remove(item,item.index)">刪除</n-button>
+      <n-button type="primary" @click="edit(item.index)">編輯</n-button>
     </n-space>
   </div>
   <n-modal v-model:show="showModal" preset="dialog" title="確定刪除?" content="確定刪除嗎?刪除的資料無法回復!!" positive-text="確定"
@@ -91,7 +92,7 @@ import {
   NDatePicker,
   NInputGroup
 } from "naive-ui";
-import { CloseOutline } from "@vicons/ionicons5";
+import { CloseOutline, Close } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
 
@@ -116,7 +117,6 @@ const filteredList = () => {
   } else {
     searchList.value = todoStore.todoList;
   }
-
 }
 
 const edit = (index: number) => {
@@ -132,26 +132,24 @@ const remove = (task: any, index: number) => {
 
 const confirmRemoveTask = () => {
   todoStore.todoList.splice(taskSelected.value.index, 1);
+  message.success("刪除成功");
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
   searchList.value = todoStore.todoList;
-  searchInput.value = '';
-  message.success("Submit");
+  filteredList();
   showModal.value = false;
 };
 
 const cancelCallback = () => {
-  message.success("Cancel");
+  message.success("取消");
   showModal.value = false;
 };
 
 const saveTask = () => {
-  // todoStore.todoList[editIndex.value].datetimerange =
-  //   taskSelected.value.datetimerange;
-  // todoStore.todoList[editIndex.value].subject = taskSelected.value.subject;
-  // todoStore.todoList[editIndex.value].description =
-  //   taskSelected.value.description;
-  searchList.value = todoStore.todoList;
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
+  searchList.value = todoStore.todoList;
+  addIndex();
+  filteredList();
+  showEditModal.value = false;
 };
 
 const clearEdit = () => {
@@ -196,14 +194,22 @@ const handleValidateClick = () => {
   });
 };
 
-
-onMounted(() => {
-  let b = searchList.value.map((e: any, index: never) => {
+//新增index
+const addIndex = () => {
+  searchList.value.map((e: any, index: never) => {
     return e.index = index;
   });
-  console.log(b);
-  console.log('searchList.value', searchList.value)
+}
+
+const clearSearch = () => {
+  searchInput.value = '';
+  filteredList();
+}
+
+onMounted(() => {
+  addIndex();
 });
+
 
 </script>
 
@@ -291,7 +297,21 @@ $gray2: #ebebeb;
   }
 }
 
+.n-input {
+  padding-right: 40px;
+}
+
 .search {
+  position: relative;
   margin-bottom: 20px;
+
+  .icon-close {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 25px;
+    color: #ccc;
+    cursor: pointer;
+  }
 }
 </style>
