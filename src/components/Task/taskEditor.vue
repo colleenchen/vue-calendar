@@ -122,13 +122,15 @@ let searchInput = ref(todoStore.currentDate);
 const filteredList = () => {
   if (searchInput.value != '') {
     const results = searchList.value.filter((data: any) => {
-      let start = moment(data.datetimerange[0]).format("YYYY-MM-DD hh:mm:ss");
-      let end = moment(data.datetimerange[1]).format("YYYY-MM-DD hh:mm:ss");
+      let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
+      let end = moment(data.datetimerange[1]).format("YYYY-MM-DD HH:mm:ss");
       return data.subject.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || data.description.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || start.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || end.toLowerCase().startsWith(searchInput.value.toLowerCase())
     });
+    console.log('results', results.datetimerange)
+    console.log(moment(results.datetimerange).valueOf())
     searchList.value = results;
   } else {
     searchList.value = todoStore.todoList;
@@ -215,6 +217,7 @@ const addIndex = () => {
   searchList.value.map((e: any, index: never) => {
     return e.index = index;
   });
+  console.log('addIndex', searchList.value);
 }
 
 const clearSearch = () => {
