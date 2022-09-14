@@ -129,7 +129,7 @@ const filteredList = () => {
         || start.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || end.toLowerCase().startsWith(searchInput.value.toLowerCase())
     });
-    console.log('results', results.datetimerange)
+    console.log('results', results[0].datetimerange)
     console.log(moment(results.datetimerange).valueOf())
     searchList.value = results;
   } else {
