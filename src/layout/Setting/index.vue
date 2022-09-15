@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import { NCard, NModal, NButton, NIcon } from "naive-ui";
 import { Add, CloseOutline } from "@vicons/ionicons5";
 import formAddTask from "../../components/Task/formAddTask.vue";
@@ -48,9 +47,7 @@ const goList = () => {
   todoStore.currentDate = '';
 };
 
-const fatherFun = (n: number) => {
-  console.log('父组件函数,接收到子组件的值为：', n)
-}
+
 </script>
 
 <style lang="scss" scoped>

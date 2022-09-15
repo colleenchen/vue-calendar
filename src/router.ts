@@ -20,6 +20,11 @@ export const routes: Array<RouteRecordRaw> = [
     name: "form",
     component: () => import("@/layout/TodoList/form.vue"),
   },
+  {
+    path: "/refresh",
+    name: "refresh",
+    component: () => import("@/layout/refresh.vue"),
+  },
 ];
 
 export default createRouter({

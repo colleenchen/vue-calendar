@@ -19,5 +19,6 @@ onMounted(() => {
 body {
   background: #fff;
 }
+
 @import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300&display=swap");
 </style>

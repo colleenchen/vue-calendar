@@ -26,6 +26,7 @@
       " :key="index" class="calendar-content__item"
         :class="[{ light: !item.isCurrentMonth }, { active: isActive(item) }]">
         {{ item.day }}
+        <span class="hasTask" v-show="hasTask(item.year, item.month, item.day)"></span>
       </div>
     </div>
   </div>
@@ -45,14 +46,32 @@ import { Home } from "@vicons/ionicons5";
 import TaskEditor from "../Task/taskEditor.vue";
 import { useDialogStore } from "../../store/dialog";
 import { useTodoStore } from "../../store/todo";
-
+import moment from "moment";
+import { cloneDeep } from "lodash-es";
+import { useRouter } from "vue-router";
 const dialogStore = useDialogStore();
 const todoStore = useTodoStore();
 const date = ref<Date>(new Date());
+const todoList = ref(cloneDeep(todoStore.todoList) as any);
+const router = useRouter();
+
 const calendarTable = computed(() => generateCalendar(date.value));
 const dateText = computed(() => {
   return `${date.value.getFullYear()} 年 ${date.value.getMonth() + 1} 月`;
 });
+
+const hasTask = (year: number, month: number, day: number) => {
+  let mm = (month + 1).toString().padStart(2, "0");
+  let dd = day.toString().padStart(2, "0");
+  let date = `${year}-${mm}-${dd}`;
+  const results = todoList.value.filter((data: any) => {
+    let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
+    let end = moment(data.datetimerange[1]).format("YYYY-MM-DD HH:mm:ss");
+    return start.toLowerCase().startsWith(date.toLowerCase())
+      || end.toLowerCase().startsWith(date.toLowerCase());
+  });
+  if (results.length !== 0) return true;
+}
 
 const dataCurr = ref("");
 const getCurrDate = (year: number, month: number, day: number) => {
@@ -109,6 +128,9 @@ const changeMonth = (type: "prev" | "next"): void => {
 
   date.value = new Date(date.value);
 };
+
+
+
 </script>
 <style lang="scss" scoped>
 $gap: 8px;
@@ -289,9 +311,18 @@ $red1: #fa6261;
 
     &.light {
       color: rgba($gray, 0.4);
-      cursor: not-allowed;
     }
   }
 
+  .hasTask {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 12px;
+    background-color: #5bc791;
+  }
 }
 </style>

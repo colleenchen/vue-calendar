@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
 import { cloneDeep } from "lodash-es";
+import router from "@/router";
 
 export const useTodoStore = defineStore("todo", () => {
   const currentDate = ref("");
@@ -34,6 +35,7 @@ export const useTodoStore = defineStore("todo", () => {
     todoList.value.push(todos);
     localStorage.todoList = JSON.stringify(todoList.value);
     resetForm();
+    router.push('/refresh');
   };
 
   return {

@@ -106,6 +106,7 @@ import { CloseOutline, Close, FileTray, Duplicate } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
 import moment from "moment";
+import router from "@/router";
 
 const message = useMessage();
 const todoStore = useTodoStore();
@@ -156,6 +157,7 @@ const confirmRemoveTask = () => {
   addIndex();
   filteredList();
   showModal.value = false;
+  router.push('/refresh');
 };
 
 const cancelCallback = () => {
@@ -169,6 +171,7 @@ const saveTask = () => {
   addIndex();
   filteredList();
   showEditModal.value = false;
+  router.push('/refresh');
 };
 
 const clearEdit = () => {
