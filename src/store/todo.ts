@@ -34,7 +34,6 @@ export const useTodoStore = defineStore("todo", () => {
     todoList.value.push(todos);
     localStorage.todoList = JSON.stringify(todoList.value);
     resetForm();
-    console.log("add-todoList", todoList.value);
   };
 
   return {

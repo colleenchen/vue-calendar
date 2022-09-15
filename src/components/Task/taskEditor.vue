@@ -46,24 +46,23 @@
         </div>
       </template>
       <div class="modCon">
-        <n-form ref="formRef" :model="todoStore.todoList[editIndex]" :rules="rules" size="large" label-placement="top">
+        <n-form ref="formRef" :model="searchList[editIndex]" :rules="rules" size="large" label-placement="top">
           <n-grid :gutter="[0, 24]" class="lab">
             <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
           </n-grid>
           <n-space vertical class="date">
-            <n-date-picker size="large" type="datetimerange"
-              v-model:value="todoStore.todoList[editIndex].datetimerange">
+            <n-date-picker size="large" type="datetimerange" v-model:value="searchList[editIndex].datetimerange">
             </n-date-picker>
           </n-space>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="標題" path="subject">
-              <n-input v-model:value="todoStore.todoList[editIndex].subject" placeholder="subject" clearable />
+              <n-input v-model:value="searchList[editIndex].subject" placeholder="subject" clearable />
             </n-form-item-gi>
           </n-grid>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="摘要" path="description">
-              <n-input v-model:value="todoStore.todoList[editIndex].description" placeholder="description"
-                type="textarea" clearable :autosize="{
+              <n-input v-model:value="searchList[editIndex].description" placeholder="description" type="textarea"
+                clearable :autosize="{
                   minRows: 3,
                   maxRows: 5,
                 }" />
@@ -129,11 +128,11 @@ const filteredList = () => {
         || start.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || end.toLowerCase().startsWith(searchInput.value.toLowerCase())
     });
-    console.log('results', results[0].datetimerange)
-    console.log(moment(results.datetimerange).valueOf())
     searchList.value = results;
+    addIndex();
   } else {
     searchList.value = todoStore.todoList;
+    addIndex();
   }
 }
 
@@ -153,6 +152,7 @@ const confirmRemoveTask = () => {
   message.success("刪除成功");
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
   searchList.value = todoStore.todoList;
+  addIndex();
   filteredList();
   showModal.value = false;
 };
@@ -217,7 +217,6 @@ const addIndex = () => {
   searchList.value.map((e: any, index: never) => {
     return e.index = index;
   });
-  console.log('addIndex', searchList.value);
 }
 
 const clearSearch = () => {
