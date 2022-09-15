@@ -100,7 +100,7 @@ import {
   NFormItemGi,
   NInput,
   NDatePicker,
-  NInputGroup
+  NInputGroup,
 } from "naive-ui";
 import { CloseOutline, Close, FileTray, Duplicate } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
@@ -119,6 +119,7 @@ const searchList = ref(cloneDeep(todoStore.todoList) as any);
 let searchInput = ref(todoStore.currentDate);
 
 const filteredList = () => {
+  searchList.value = todoStore.todoList;
   if (searchInput.value != '') {
     const results = searchList.value.filter((data: any) => {
       let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
