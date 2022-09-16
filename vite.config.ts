@@ -16,6 +16,9 @@ export default defineConfig({
       plugins: [require('autoprefixer')],
     },
   },
+  server: {
+    host: '0.0.0.0'
+  },
   build: {
     // terserOptions: {
     //   compress: {
