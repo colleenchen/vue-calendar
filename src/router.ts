@@ -11,16 +11,6 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import("@/components/curriculum/index.vue"),
   },
   {
-    path: "/list",
-    name: "list",
-    component: () => import("@/layout/TodoList/List.vue"),
-  },
-  {
-    path: "/form",
-    name: "form",
-    component: () => import("@/layout/TodoList/form.vue"),
-  },
-  {
     path: "/refresh",
     name: "refresh",
     component: () => import("@/layout/refresh.vue"),
