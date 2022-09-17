@@ -28,7 +28,6 @@ export const useTodoStore = defineStore("todo", () => {
   const initTodos = () => {
     localStorage.todoList = localStorage.todoList || "[]";
     todoList.value = JSON.parse(localStorage.todoList);
-    console.log("initTodos", todoList.value);
   };
 
   const addTodo = () => {
