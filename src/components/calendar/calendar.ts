@@ -88,3 +88,29 @@ export const generateCalendar = (date: Date) => {
 
   return calendarTable;
 };
+
+
+//獲取兩日期之間日期列表函數
+export const getDiffDate = (stime: any, etime: any) => {
+  //初始化日期列表，數組
+  var diffdate = new Array();
+  var i = 0;
+  //開始日期小於等於結束日期,並循環
+  while (stime <= etime) {
+    diffdate[i] = stime;
+    //獲取開始日期時間戳
+    var stime_ts = new Date(stime).getTime();
+    // console.log('當前日期：' + stime + '當前時間戳：' + stime_ts);
+    //增加一天時間戳後的日期
+    var next_date = stime_ts + (24 * 60 * 60 * 1000);
+    //拼接年月日，這裡的月份會返回（0-11），所以要+1
+    var next_dates_y = new Date(next_date).getFullYear() + '-';
+    var next_dates_m = (new Date(next_date).getMonth() + 1 < 10) ? '0' + (new Date(next_date).getMonth() + 1) + '-' : (new Date(next_date).getMonth() + 1) + '-';
+    var next_dates_d = (new Date(next_date).getDate() < 10) ? '0' + new Date(next_date).getDate() : new Date(next_date).getDate();
+    stime = next_dates_y + next_dates_m + next_dates_d;
+    //增加數組key
+    i++;
+  }
+  // console.log(diffdate);
+  return diffdate;
+}

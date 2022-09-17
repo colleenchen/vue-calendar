@@ -3,7 +3,7 @@
     <n-button @click="goList" size="large" strong type="primary">所有代辦事項</n-button>
   </div>
   <div class="addList">
-    <n-button strong secondary circle type="info" @click="dialogStore.showAddTodoModal = true">
+    <n-button strong secondary circle type="info" @click="addTodo()">
       <template #icon>
         <n-icon size="45">
           <Add />
@@ -47,6 +47,11 @@ const goList = () => {
   todoStore.currentDate = '';
 };
 
+
+const addTodo = () => {
+  dialogStore.showAddTodoModal = true;
+  todoStore.firstData = false;
+}
 
 </script>
 

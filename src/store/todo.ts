@@ -2,9 +2,13 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { cloneDeep } from "lodash-es";
 import router from "@/router";
+import { useDialogStore } from "./dialog";
+
 
 export const useTodoStore = defineStore("todo", () => {
+  const dialogStore = useDialogStore();
   const currentDate = ref("");
+  const firstData = ref(false);
   const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
   const initialTodo = {
     subject: "",
@@ -36,6 +40,9 @@ export const useTodoStore = defineStore("todo", () => {
     localStorage.todoList = JSON.stringify(todoList.value);
     resetForm();
     router.push('/refresh');
+    if (firstData.value === true) {
+      dialogStore.showAddTodoModal = false;
+    }
   };
 
   return {
@@ -46,5 +53,6 @@ export const useTodoStore = defineStore("todo", () => {
     resetForm,
     addTodo,
     currentDate,
+    firstData,
   };
 });

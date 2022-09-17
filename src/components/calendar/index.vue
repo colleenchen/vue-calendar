@@ -40,7 +40,7 @@
 <script lang="ts" setup>
 import { NIcon, NDrawer, NDrawerContent } from "naive-ui";
 import { ref, computed } from "vue";
-import { weekMapZh, generateCalendar, CalendarItem } from "./calendar";
+import { weekMapZh, generateCalendar, CalendarItem, getDiffDate } from "./calendar";
 import { isAllTrue } from "@/utils/common";
 import { Home } from "@vicons/ionicons5";
 import TaskEditor from "../Task/taskEditor.vue";
@@ -48,12 +48,12 @@ import { useDialogStore } from "../../store/dialog";
 import { useTodoStore } from "../../store/todo";
 import moment from "moment";
 import { cloneDeep } from "lodash-es";
-import { useRouter } from "vue-router";
+
 const dialogStore = useDialogStore();
 const todoStore = useTodoStore();
 const date = ref<Date>(new Date());
 const todoList = ref(cloneDeep(todoStore.todoList) as any);
-const router = useRouter();
+
 
 const calendarTable = computed(() => generateCalendar(date.value));
 const dateText = computed(() => {
@@ -65,10 +65,13 @@ const hasTask = (year: number, month: number, day: number) => {
   let dd = day.toString().padStart(2, "0");
   let date = `${year}-${mm}-${dd}`;
   const results = todoList.value.filter((data: any) => {
-    let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
-    let end = moment(data.datetimerange[1]).format("YYYY-MM-DD HH:mm:ss");
-    return start.toLowerCase().startsWith(date.toLowerCase())
-      || end.toLowerCase().startsWith(date.toLowerCase());
+    let start = moment(data.datetimerange[0]).format("YYYY-MM-DD");
+    let end = moment(data.datetimerange[1]).format("YYYY-MM-DD");
+    let all = getDiffDate(start, end);
+    var allDate = all.map(function (item) {
+      return item.toLowerCase().startsWith(date.toLowerCase());
+    });
+    return allDate.includes(true);
   });
   if (results.length !== 0) return true;
 }

@@ -6,7 +6,7 @@
     </n-input-group>
   </n-space>
   <div class="noTodo" v-if="searchList.length === 0 && searchInput===''">
-    <div class="btn" @click="dialogStore.showAddTodoModal=true">
+    <div class="btn" @click="noData()">
       <Duplicate class="icon-duplicate" />
       <div>尚無資料 火速新增</div>
     </div>
@@ -107,6 +107,7 @@ import { ref, onMounted } from "vue";
 import { cloneDeep } from "lodash-es";
 import moment from "moment";
 import router from "@/router";
+import { getDiffDate } from "../calendar/calendar";
 
 const message = useMessage();
 const todoStore = useTodoStore();
@@ -121,14 +122,18 @@ let searchInput = ref(todoStore.currentDate);
 
 const filteredList = () => {
   searchList.value = todoStore.todoList;
+  addIndex();
   if (searchInput.value != '') {
     const results = searchList.value.filter((data: any) => {
       let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
       let end = moment(data.datetimerange[1]).format("YYYY-MM-DD HH:mm:ss");
+      let all = getDiffDate(start, end);
+      var allDate = all.map(function (item) {
+        return item.toLowerCase().startsWith(searchInput.value.toLowerCase());
+      });
       return data.subject.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || data.description.toLowerCase().startsWith(searchInput.value.toLowerCase())
-        || start.toLowerCase().startsWith(searchInput.value.toLowerCase())
-        || end.toLowerCase().startsWith(searchInput.value.toLowerCase())
+        || allDate.includes(true)
     });
     searchList.value = results;
     addIndex();
@@ -137,6 +142,8 @@ const filteredList = () => {
     addIndex();
   }
 }
+
+
 
 const edit = (index: number) => {
   editIndex.value = index;
@@ -179,6 +186,11 @@ const clearEdit = () => {
   todoStore.initTodos();
 };
 
+const noData = () => {
+  dialogStore.showAddTodoModal = true;
+  todoStore.firstData = true;
+}
+
 const rules = {
   subject: {
     required: true,
@@ -218,13 +230,14 @@ const handleValidateClick = () => {
 
 //新增index
 const addIndex = () => {
-  searchList.value.map((e: any, index: never) => {
+  searchList.value.map((e: any, index: number) => {
     return e.index = index;
   });
 }
 
 const clearSearch = () => {
   searchInput.value = '';
+  todoStore.currentDate = '';
   filteredList();
 }
 
