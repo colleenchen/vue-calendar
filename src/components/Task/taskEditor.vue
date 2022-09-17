@@ -5,13 +5,13 @@
       <Close class="icon-close" @click="clearSearch" />
     </n-input-group>
   </n-space>
-  <div class="noTodo" v-if="searchList.length === 0 && searchInput===''">
+  <div class="noTodo" v-if="todoStore.searchList.length === 0 && searchInput===''">
     <div class="btn" @click="noData()">
       <Duplicate class="icon-duplicate" />
       <div>尚無資料 火速新增</div>
     </div>
   </div>
-  <div class="todoList" v-for="(item, index) in searchList" :key="index">
+  <div class="todoList" v-for="(item, index) in todoStore.searchList" :key="index">
     <div class="time">
       <n-time :time="item.datetimerange[0]" type="datetime" /> ~
       <n-time :time="item.datetimerange[1]" type="datetime" />
@@ -23,7 +23,7 @@
       <n-button type="primary" @click="edit(item.index)">編輯</n-button>
     </n-space>
   </div>
-  <div class="seachNull" v-if="searchList.length === 0 && searchInput!==''">
+  <div class="seachNull" v-if="todoStore.searchList.length === 0 && searchInput!==''">
     <FileTray class="icon-fileTray" />
     <div>搜尋無資料</div>
   </div>
@@ -46,23 +46,25 @@
         </div>
       </template>
       <div class="modCon">
-        <n-form ref="formRef" :model="searchList[editIndex]" :rules="rules" size="large" label-placement="top">
+        <n-form ref="formRef" :model="todoStore.searchList[editIndex]" :rules="rules" size="large"
+          label-placement="top">
           <n-grid :gutter="[0, 24]" class="lab">
             <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
           </n-grid>
           <n-space vertical class="date">
-            <n-date-picker size="large" type="datetimerange" v-model:value="searchList[editIndex].datetimerange">
+            <n-date-picker size="large" type="datetimerange"
+              v-model:value="todoStore.searchList[editIndex].datetimerange">
             </n-date-picker>
           </n-space>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="標題" path="subject">
-              <n-input v-model:value="searchList[editIndex].subject" placeholder="subject" clearable />
+              <n-input v-model:value="todoStore.searchList[editIndex].subject" placeholder="subject" clearable />
             </n-form-item-gi>
           </n-grid>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="摘要" path="description">
-              <n-input v-model:value="searchList[editIndex].description" placeholder="description" type="textarea"
-                clearable :autosize="{
+              <n-input v-model:value="todoStore.searchList[editIndex].description" placeholder="description"
+                type="textarea" clearable :autosize="{
                   minRows: 3,
                   maxRows: 5,
                 }" />
@@ -104,7 +106,6 @@ import {
 } from "naive-ui";
 import { CloseOutline, Close, FileTray, Duplicate } from "@vicons/ionicons5";
 import { ref, onMounted } from "vue";
-import { cloneDeep } from "lodash-es";
 import moment from "moment";
 import router from "@/router";
 import { getDiffDate } from "../calendar/calendar";
@@ -117,14 +118,12 @@ const formRef = ref<FormInst | null>(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
 const editIndex = ref(0);
-const searchList = ref(cloneDeep(todoStore.todoList) as any);
 let searchInput = ref(todoStore.currentDate);
 
 const filteredList = () => {
-  searchList.value = todoStore.todoList;
-  addIndex();
+  todoStore.searchList = todoStore.todoList;
   if (searchInput.value != '') {
-    const results = searchList.value.filter((data: any) => {
+    const results = todoStore.searchList.filter((data: any) => {
       let start = moment(data.datetimerange[0]).format("YYYY-MM-DD HH:mm:ss");
       let end = moment(data.datetimerange[1]).format("YYYY-MM-DD HH:mm:ss");
       let all = getDiffDate(start, end);
@@ -135,15 +134,11 @@ const filteredList = () => {
         || data.description.toLowerCase().startsWith(searchInput.value.toLowerCase())
         || allDate.includes(true)
     });
-    searchList.value = results;
-    addIndex();
+    todoStore.searchList = results;
   } else {
-    searchList.value = todoStore.todoList;
-    addIndex();
+    todoStore.searchList = todoStore.todoList;
   }
 }
-
-
 
 const edit = (index: number) => {
   editIndex.value = index;
@@ -160,8 +155,7 @@ const confirmRemoveTask = () => {
   todoStore.todoList.splice(taskSelected.value.index, 1);
   message.success("刪除成功");
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
-  searchList.value = todoStore.todoList;
-  addIndex();
+  todoStore.searchList = todoStore.todoList;
   filteredList();
   showModal.value = false;
   router.push('/refresh');
@@ -174,8 +168,7 @@ const cancelCallback = () => {
 
 const saveTask = () => {
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
-  searchList.value = todoStore.todoList;
-  addIndex();
+  todoStore.searchList = todoStore.todoList;
   filteredList();
   showEditModal.value = false;
   router.push('/refresh');
@@ -228,13 +221,6 @@ const handleValidateClick = () => {
   });
 };
 
-//新增index
-const addIndex = () => {
-  searchList.value.map((e: any, index: number) => {
-    return e.index = index;
-  });
-}
-
 const clearSearch = () => {
   searchInput.value = '';
   todoStore.currentDate = '';
@@ -242,7 +228,7 @@ const clearSearch = () => {
 }
 
 onMounted(() => {
-  addIndex();
+  todoStore.addIndex();
   filteredList();
 });
 

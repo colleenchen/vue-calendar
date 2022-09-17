@@ -43,7 +43,7 @@ const todoStore = useTodoStore();
 const dialogStore = useDialogStore();
 
 const goList = () => {
-  dialogStore.showTodoListDrawer = true;
+  dialogStore.todoListDrawer();
   todoStore.currentDate = '';
 };
 

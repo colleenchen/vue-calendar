@@ -79,7 +79,7 @@ const hasTask = (year: number, month: number, day: number) => {
 const dataCurr = ref("");
 const getCurrDate = (year: number, month: number, day: number) => {
   dataCurr.value = `${year}-${month + 1}-${day}`;
-  dialogStore.showTodoListDrawer = true;
+  dialogStore.todoListDrawer();
   const dayCurr = day.toString().padStart(2, '0');
   const monthCurr = (month + 1).toString().padStart(2, '0');
   todoStore.currentDate = `${year}-${monthCurr}-${dayCurr}`;
@@ -128,7 +128,6 @@ const changeMonth = (type: "prev" | "next"): void => {
   // date.value.setDate(1);
   date.value.setMonth(month);
   date.value.setFullYear(year);
-
   date.value = new Date(date.value);
 };
 

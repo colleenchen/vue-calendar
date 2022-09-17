@@ -10,6 +10,7 @@ export const useTodoStore = defineStore("todo", () => {
   const currentDate = ref("");
   const firstData = ref(false);
   const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
+
   const initialTodo = {
     subject: "",
     datetimerange: [todayStart.valueOf(), Date.now()],
@@ -18,6 +19,7 @@ export const useTodoStore = defineStore("todo", () => {
   };
   const todoList = ref([initialTodo]);
   const todo = ref({ ...initialTodo });
+  const searchList = ref(cloneDeep(todoList.value) as any);
 
   const resetForm = () => {
     todo.value = cloneDeep(initialTodo);
@@ -45,14 +47,23 @@ export const useTodoStore = defineStore("todo", () => {
     }
   };
 
+  //新增index
+  const addIndex = () => {
+    todoList.value.map((e: any, index: number) => {
+      return e.index = index;
+    });
+  }
+
   return {
     todoList,
     initialTodo,
     todo,
+    currentDate,
+    firstData,
+    searchList,
     initTodos,
     resetForm,
     addTodo,
-    currentDate,
-    firstData,
+    addIndex,
   };
 });
