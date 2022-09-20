@@ -36,7 +36,7 @@
       <template #header>
         <div class="modHead">
           <span>編輯代辦事項</span>
-          <n-button text @click="showEditModal = false">
+          <n-button text @click="clearEdit">
             <template #icon>
               <n-icon size="30" color="#414141">
                 <CloseOutline />
@@ -177,6 +177,7 @@ const saveTask = () => {
 const clearEdit = () => {
   showEditModal.value = false;
   todoStore.initTodos();
+  router.push('/refresh');
 };
 
 const noData = () => {
