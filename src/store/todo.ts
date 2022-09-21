@@ -12,6 +12,7 @@ export const useTodoStore = defineStore("todo", () => {
   const todayStart = new Date(new Date().setHours(0, 0, 0, 0));
 
   const initialTodo = {
+    id: Math.random().toString(36).substring(2),
     subject: "",
     datetimerange: [todayStart.valueOf(), Date.now()],
     description: "",
@@ -32,6 +33,7 @@ export const useTodoStore = defineStore("todo", () => {
 
   const addTodo = () => {
     const todos = {
+      id: Math.random().toString(36).substring(2),
       subject: todo.value.subject,
       datetimerange: todo.value.datetimerange,
       description: todo.value.description,
@@ -47,11 +49,11 @@ export const useTodoStore = defineStore("todo", () => {
   };
 
   //新增index
-  const addIndex = () => {
-    todoList.value.map((e: any, index: number) => {
-      return e.index = index;
-    });
-  }
+  // const addIndex = () => {
+  //   todoList.value.map((e: any, index: number) => {
+  //     return e.index = index;
+  //   });
+  // }
 
   return {
     todoList,
@@ -63,6 +65,5 @@ export const useTodoStore = defineStore("todo", () => {
     initTodos,
     resetForm,
     addTodo,
-    addIndex,
   };
 });

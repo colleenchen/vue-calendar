@@ -11,7 +11,6 @@ export const useDialogStore = defineStore("dialog", () => {
   const todoListDrawer = () => { 
     if (todoStore.currentDate !== '') {
       todoStore.searchList = todoStore.todoList;
-      todoStore.addIndex();
     }
     showTodoListDrawer.value = true;
   }

@@ -19,8 +19,8 @@
     <div class="subject">{{ item.subject }}</div>
     <div class="description">{{ item.description }}</div>
     <n-space class="btn-box">
-      <n-button @click="remove(item,item.index)">刪除</n-button>
-      <n-button type="primary" @click="edit(item.index)">編輯</n-button>
+      <n-button @click="remove(item,item.id)">刪除</n-button>
+      <n-button type="primary" @click="edit(item,item.id)">編輯</n-button>
     </n-space>
   </div>
   <div class="seachNull" v-if="todoStore.searchList.length === 0 && searchInput!==''">
@@ -46,25 +46,23 @@
         </div>
       </template>
       <div class="modCon">
-        <n-form ref="formRef" :model="todoStore.searchList[editIndex]" :rules="rules" size="large"
-          label-placement="top">
+        <n-form ref="formRef" :model="taskSelected" :rules="rules" size="large" label-placement="top">
           <n-grid :gutter="[0, 24]" class="lab">
             <n-form-item-gi :span="24" label="時間" path="datetimerange"></n-form-item-gi>
           </n-grid>
           <n-space vertical class="date">
-            <n-date-picker size="large" type="datetimerange"
-              v-model:value="todoStore.searchList[editIndex].datetimerange">
+            <n-date-picker size="large" type="datetimerange" v-model:value="taskSelected.datetimerange">
             </n-date-picker>
           </n-space>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="標題" path="subject">
-              <n-input v-model:value="todoStore.searchList[editIndex].subject" placeholder="subject" clearable />
+              <n-input v-model:value="taskSelected.subject" placeholder="subject" clearable />
             </n-form-item-gi>
           </n-grid>
           <n-grid :gutter="[0, 24]">
             <n-form-item-gi :span="24" label="摘要" path="description">
-              <n-input v-model:value="todoStore.searchList[editIndex].description" placeholder="description"
-                type="textarea" clearable :autosize="{
+              <n-input v-model:value="taskSelected.description" placeholder="description" type="textarea" clearable
+                :autosize="{
                   minRows: 3,
                   maxRows: 5,
                 }" />
@@ -117,7 +115,6 @@ const taskSelected = ref([] as any);
 const formRef = ref<FormInst | null>(null);
 const showModal = ref(false);
 const showEditModal = ref(false);
-const editIndex = ref(0);
 let searchInput = ref(todoStore.currentDate);
 
 const filteredList = () => {
@@ -140,19 +137,22 @@ const filteredList = () => {
   }
 }
 
-const edit = (index: number) => {
-  editIndex.value = index;
+const edit = (task: any, id: string) => {
+  taskSelected.value = task;
+  taskSelected.value.id = id;
   showEditModal.value = true;
+  console.log('taskSelected.value', taskSelected.value)
 };
 
-const remove = (task: any, index: number) => {
+const remove = (task: any, id: string) => {
   taskSelected.value = task;
-  taskSelected.value.index = index;
+  taskSelected.value.id = id;
   showModal.value = true;
 };
 
 const confirmRemoveTask = () => {
-  todoStore.todoList.splice(taskSelected.value.index, 1);
+  // todoStore.todoList.splice(taskSelected.value.index, 1);
+  todoStore.todoList = todoStore.todoList.filter((todo) => todo.id !== taskSelected.value.id);
   message.success("刪除成功");
   localStorage.setItem("todoList", JSON.stringify(todoStore.todoList));
   todoStore.searchList = todoStore.todoList;
@@ -229,7 +229,6 @@ const clearSearch = () => {
 }
 
 onMounted(() => {
-  todoStore.addIndex();
   filteredList();
 });
 
