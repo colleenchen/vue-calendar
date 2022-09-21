@@ -141,7 +141,6 @@ const edit = (task: any, id: string) => {
   taskSelected.value = task;
   taskSelected.value.id = id;
   showEditModal.value = true;
-  console.log('taskSelected.value', taskSelected.value)
 };
 
 const remove = (task: any, id: string) => {
